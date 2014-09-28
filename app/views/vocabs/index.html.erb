@@ -1,0 +1,27 @@
+<h1>Listing vocabs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Reference lang</th>
+      <th>Learning lang</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vocabs.each do |vocab| %>
+      <tr>
+        <td><%= vocab.user_id %></td>
+        <td><%= vocab.reference_lang %></td>
+        <td><%= vocab.learning_lang %></td>
+        <td><%= link_to 'Edit', edit_user_vocab_path(@user, vocab) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vocab', new_user_vocab_path(@user.id) %>
