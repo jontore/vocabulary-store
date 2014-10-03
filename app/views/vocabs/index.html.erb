@@ -16,7 +16,9 @@
         <td><%= vocab.user_id %></td>
         <td><%= vocab.reference_lang %></td>
         <td><%= vocab.learning_lang %></td>
-        <td><%= link_to 'Edit', edit_user_vocab_path(@user, vocab) %></td>
+        <% if @is_users %>
+          <td><%= link_to 'Edit', edit_user_vocab_path(@user, vocab) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +26,6 @@
 
 <br>
 
-<%= link_to 'New Vocab', new_user_vocab_path(@user.id) %>
+<% if @is_users %>
+  <%= link_to 'New Vocab', new_user_vocab_path(@user.id) %>
+<%end%>

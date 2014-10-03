@@ -1,12 +1,13 @@
 class VocabsController < ApplicationController
-  before_action :set_vocab, only: [:show, :edit, :update, :destroy]
   before_action :set_user
-  before_action :check_auth , :only => [:edit, :update, :destroy]
+  before_action :check_auth , only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_vocab, only: [:show, :edit, :update, :destroy]
 
   # GET /vocabs
   # GET /vocabs.json
   def index
     @vocabs = Vocab.all().where(user_id: @user.id)
+    @is_users = current_user?(@user)
   end
 
   # GET /vocabs/1
@@ -65,7 +66,6 @@ class VocabsController < ApplicationController
 
   private
     def set_vocab
-      puts 'set vocab'
       @vocab = Vocab.find(params[:id])
     end
 
@@ -74,7 +74,7 @@ class VocabsController < ApplicationController
     end
 
     def check_auth
-      if @current_user.id != @vocab.user_id
+      unless current_user?(@user)
         redirect_to user_vocabs_path(@user)
       end
     end

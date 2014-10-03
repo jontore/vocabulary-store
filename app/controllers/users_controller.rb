@@ -2,11 +2,13 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth , :only => [:edit, :update, :destroy]
+  before_action :signed_in_user, only: [:edit, :update, :destroy]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
   # GET /users
   # GET /users.json
   def index
     @users = User.all
+    @current_user = current_user()
   end
 
   # GET /users/1
@@ -69,10 +71,13 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
-    def check_auth
-      if @current_user.id != @user.id
-        redirect_to users_path
-      end
+    def signed_in_user
+      redirect_to session_url, notice: "Please sign in." unless signed_in?
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(users_url) unless current_user?(@user)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
